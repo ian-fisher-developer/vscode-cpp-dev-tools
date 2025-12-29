@@ -10,6 +10,7 @@ statisticsConfigurationVariants:
       }
       settings: {
         STATISTICS_BUILD_TESTS: "ON",
+        STATISTICS_BUILD_STRESS_TESTS: "OFF",
         STATISTICS_GENERATE_COVERAGE_REPORT: "ON",
         STATISTICS_BUILD_EXAMPLES: "ON"
       }
@@ -23,6 +24,8 @@ statisticsConfigurationVariants:
       }
       settings: {
         STATISTICS_BUILD_TESTS: "ON",
+        STATISTICS_BUILD_STRESS_TESTS: "OFF",
+        STATISTICS_GENERATE_COVERAGE_REPORT: "OFF",
         STATISTICS_BUILD_EXAMPLES: "ON"
       }
       buildType: Release

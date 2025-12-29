@@ -1,13 +1,13 @@
 #pragma once
 
-// Example of a multi-threaded statistics calculation.
+// Example of a multi-threaded statistics accumulation.
 //
-// parallel_statistics::run() processes values using several calculators, each
+// parallel_statistics::run() processes values using several accumulators, each
 // in its own thread, and then combines the results in to the return object.
 // Use the parallel solution with code like this:
 //
-//   stats::StatisticsCalculator calculator = parallel_statistics::run( values, number_of_values );
-//   float u = calculator.mean(); // sets `u` to the mean of the values
+//   stats::StatisticsAccumulator statistics = parallel_statistics::run( values, number_of_values );
+//   float u = statistics.mean(); // sets `u` to the mean of the values
 //
 // This example is complete. Feel free to copy it to an application and change
 // the details for the custom requirements.
@@ -15,7 +15,7 @@
 #include <thread>
 #include <vector>
 
-#include "stats/StatisticsCalculator.hpp"
+#include "stats/StatisticsAccumulator.hpp"
 
 namespace parallel_statistics
 {
@@ -38,25 +38,25 @@ inline size_t optimal_number_of_threads(size_t number_of_values)
     return number_of_threads;
 }
 
-inline void add_to_calculator(stats::StatisticsCalculator& calculator, const float* const values,
+inline void add_to_accumulator(stats::StatisticsAccumulator& accumulator, const float* const values,
                               const size_t number_of_values)
 {
     for (size_t i = 0; i < number_of_values; ++i)
     {
-        calculator.add(values[i]);
+        accumulator.add(values[i]);
     }
 }
 
-inline stats::StatisticsCalculator run(const float* const values, size_t number_of_values)
+inline stats::StatisticsAccumulator run(const float* const values, size_t number_of_values)
 {
     if (number_of_values == 0)
     {
-        return stats::StatisticsCalculator();
+        return stats::StatisticsAccumulator();
     }
 
-    // initialize several calculators
+    // initialize several accumulators
     size_t number_of_threads = optimal_number_of_threads(number_of_values);
-    std::vector<stats::StatisticsCalculator> calculators(number_of_threads);
+    std::vector<stats::StatisticsAccumulator> accumulators(number_of_threads);
 
     // make a container for the spawned threads
     // (-1, because we already have this main thread)
@@ -69,13 +69,13 @@ inline stats::StatisticsCalculator run(const float* const values, size_t number_
     for (size_t i = 0; i < spawned_threads.size(); ++i)
     {
         spawned_threads[i] =
-            std::thread(&add_to_calculator, std::ref(calculators[i]), block_start, block_size);
+            std::thread(&add_to_accumulator, std::ref(accumulators[i]), block_start, block_size);
         block_start += block_size;
     }
 
     // process the remainder in this main thread
     size_t last_block_size = number_of_values - block_size * (number_of_threads - 1);
-    add_to_calculator(calculators.back(), block_start, last_block_size);
+    add_to_accumulator(accumulators.back(), block_start, last_block_size);
 
     // wait for the spawned threads to complete
     for (auto& spawned_thread : spawned_threads)
@@ -84,10 +84,10 @@ inline stats::StatisticsCalculator run(const float* const values, size_t number_
     }
 
     // combine the results
-    stats::StatisticsCalculator combined;
-    for (const auto& calculator : calculators)
+    stats::StatisticsAccumulator combined;
+    for (const auto& accumulator : accumulators)
     {
-        combined += calculator;
+        combined += accumulator;
     }
 
     return combined;

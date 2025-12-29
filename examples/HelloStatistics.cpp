@@ -12,16 +12,16 @@
 //  Kurtosis = -1.5
 
 #include <iostream>
-#include <stats/StatisticsCalculator.hpp>
+#include <stats/StatisticsAccumulator.hpp>
 #include <stats/StatisticsReport.hpp>
 
 int main(int /*unused*/, char** /*unused*/)
 {
-    stats::StatisticsCalculator calculator;
+    stats::StatisticsAccumulator statistics;
 
-    calculator.add(1.0);
-    calculator.add(2.0);
-    calculator.add(3.0);
+    statistics.add(1.0);
+    statistics.add(2.0);
+    statistics.add(3.0);
 
-    std::cout << stats::description(calculator) << std::endl;
+    std::cout << stats::description(statistics) << std::endl;
 }

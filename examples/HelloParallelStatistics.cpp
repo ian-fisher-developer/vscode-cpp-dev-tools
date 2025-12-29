@@ -8,7 +8,8 @@ int main(int /*unused*/, char** /*unused*/)
 {
     std::array<float, 3> values = {1.0, 2.0, 3.0};
 
-    stats::StatisticsCalculator calculator = parallel_statistics::run(values.data(), values.size());
+    stats::StatisticsAccumulator statistics =
+        parallel_statistics::run(values.data(), values.size());
 
-    std::cout << stats::description(calculator) << std::endl;
+    std::cout << stats::description(statistics) << std::endl;
 }

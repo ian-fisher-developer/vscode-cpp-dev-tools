@@ -24,20 +24,20 @@
     // status bar selectors to quickly switch between build configurations.
     // Note the environment variable CMAKE_VARIANT_NAME is set in
     // cmake-variants.yaml.
-    "cmake.buildDirectory": "${workspaceFolder}/build/build-vscode/${buildKitVendor}_${buildKitVersionMajor}_${buildKitVersionMinor}-${buildKitTargetArch}-${buildKitTargetOs}/${env:CMAKE_VARIANT_NAME}",
+    "cmake.buildDirectory": "${workspaceFolder}/build/build-vscode-cmake-tools/${buildKitVendor}_${buildKitVersionMajor}_${buildKitVersionMinor}-${buildKitTargetArch}-${buildKitTargetOs}/${env:CMAKE_VARIANT_NAME}",
     //
     //
     // We do not use CTest so disable it in the test explorer. Instead, tell
     // the TestMate extension where to look for the built test programs...
     "cmake.ctest.testExplorerIntegrationEnabled": false,
-    "testMate.cpp.test.executables": "build/build-vscode/**/*test*",
+    "testMate.cpp.test.executables": "build/build-vscode-cmake-tools/**/*test*",
     // ...and raise the test timeout to allow the stress tests.
     "testMate.cpp.test.runtimeLimit": 36000,
     //
     //
     // Tell the Coverage Gutters extension where to look for the coverage
     // reports.
-    "coverage-gutters.coverageBaseDir": "build/build-vscode/**",
+    "coverage-gutters.coverageBaseDir": "build/build-vscode-cmake-tools/**",
     "coverage-gutters.coverageFileNames": [
         "coverage_report.xml"
     ],

@@ -8,50 +8,49 @@ namespace stats
 /**
  * Takes one value at a time, providing accumulated descriptive statistics.
  *
- * StatisticsCalculator accepts 32-bit floating point values with add().
+ * StatisticsAccumulator accepts 32-bit floating point values with add().
  * It provides measures of count, minimum, maximum, mean, absolute mean,
  * quadratic mean (rms), standard deviation, skewness, and kurtosis.
  *
- * Use the calculator with code like the following.
+ * Use the accumulator with code like the following.
 
  \code
- #include <stats/StatisticsCalculator.h>
+ #include <stats/StatisticsAccumulator.h>
 
 
- // create a statistics calculator
+ // create a statistics accumulator
 
- StatisticsCalculator calculator;
+ stats::StatisticsAccumulator statistics;
 
 
  // add some values
 
- calculator.add( -2.0 );
- calculator.add(  0.0 );
- calculator.add( +2.0 );
- calculator.add( +4.0 );
-
+ statistics.add( -2.0 );
+ statistics.add(  0.0 );
+ statistics.add( +2.0 );
+ statistics.add( +4.0 );
 
  // access the measures
 
- size_t n = calculator.count(); // sets n to 4
- float  u = calculator.mean();  // sets u to 1.0;
+ size_t n = statistics.count(); // sets n to 4
+ float  u = statistics.mean();  // sets u to 1.0;
  \endcode
 
  * Be sure to watch for undefined measures.
 
  \code
- if( stats::undefined( calculator.mean() ) ){
+ if( stats::undefined( statistics.mean() ) ){
      // no values -- ignore the undefined mean
  }
- if( stats::undefined( calculator.skewness() ) ){
+ if( stats::undefined( statistics.skewness() ) ){
      // all values are the same -- ignore the undefined skewness
  }
  \endcode
 
- * The calculator does not store the values. It allows statistics of
+ * The accumulator does not store the values. It allows statistics of
  * larga data.
  *
- * The statistics algorithm is stable. Rounding errors accumulate slowly.
+ * The accumulation algorithm is stable. Rounding errors accumulate slowly.
  * Stress tests find 32-bit floating point deviations for large data:
  *
  * - standard deviation: approximately 134 billion values
@@ -67,7 +66,7 @@ namespace stats
  * through the data.
  */
 
-class StatisticsCalculator
+class StatisticsAccumulator
 {
   private:
     std::size_t count_;
@@ -75,10 +74,10 @@ class StatisticsCalculator
     double moment1_, abs_moment1_, moment2_, moment3_, moment4_;
 
   public:
-    StatisticsCalculator();
+    StatisticsAccumulator();
 
     /**
-     * Updates the calculator with the value.
+     * Updates the accumulated statistics with the value.
      */
     void add(const float& value);
 
@@ -133,36 +132,36 @@ class StatisticsCalculator
     float kurtosis() const;
 
     /**
-     * "Adds" calculators, aggregating the results.
+     * "Adds" accumulated statistics, aggregating the results.
      *
-     * Use code like the following to combine calculators.
+     * Use code like the following to combine accumulated statistics.
 
      \code
-     #include <stats/StatisticsCalculator.h>
+     #include <stats/StatisticsAccumulator.h>
 
 
-     // make three calculators
+     // make three accumulators
 
-     StatisticsCalculator calculator1, calculator2, calculator3;
+     StatisticsAccumulator accumulator1, accumulator2, accumulator3;
 
 
-     // add values to each calculator
+     // add values to each accumulator
 
      ...
 
 
      // and combine the results
 
-     StatisticsCalculator combined = calculator1 + calculator2 + calculator3;
+     StatisticsAccumulator combined = accumulator1 + accumulator2 + accumulator3;
      \endcode
 
      */
-    StatisticsCalculator operator+(const StatisticsCalculator& that) const;
+    StatisticsAccumulator operator+(const StatisticsAccumulator& that) const;
 
     /**
-     * "Adds" the specified calculator to this one, aggregating the results.
+     * "Adds" the specified accumulator to this one, aggregating the results.
      */
-    StatisticsCalculator& operator+=(const StatisticsCalculator& rhs);
+    StatisticsAccumulator& operator+=(const StatisticsAccumulator& rhs);
 };
 
 } // namespace stats

@@ -13,6 +13,4 @@ services:
         volumes:
             - ${HOME}/.ssh:${HOME}/.ssh
             - ${HOME}/Development:${HOME}/Development
-            - /opt/dey:/opt/dey
-            - /opt/fsl-auto:/opt/fsl-auto
         network_mode: host

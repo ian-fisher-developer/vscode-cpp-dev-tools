@@ -1,15 +1,14 @@
-#include "stats/StatisticsCalculator.hpp"
-
 #include <algorithm>
 #include <cmath>
 #include <limits>
 
+#include "stats/StatisticsAccumulator.hpp"
 #include "stats/StatisticsUtilities.hpp"
 
 namespace stats
 {
 
-StatisticsCalculator::StatisticsCalculator()
+StatisticsAccumulator::StatisticsAccumulator()
     : count_(0)
     , minimum_(std::numeric_limits<float>::max())
     , maximum_(-std::numeric_limits<float>::max())
@@ -21,7 +20,7 @@ StatisticsCalculator::StatisticsCalculator()
 {
 }
 
-void StatisticsCalculator::add(const float& value)
+void StatisticsAccumulator::add(const float& value)
 {
     ++count_;
 
@@ -42,12 +41,12 @@ void StatisticsCalculator::add(const float& value)
     moment2_ += term1;
 }
 
-size_t StatisticsCalculator::count() const
+size_t StatisticsAccumulator::count() const
 {
     return count_;
 }
 
-float StatisticsCalculator::minimum() const
+float StatisticsAccumulator::minimum() const
 {
     if (count_ == 0)
     {
@@ -57,7 +56,7 @@ float StatisticsCalculator::minimum() const
     return minimum_;
 }
 
-float StatisticsCalculator::maximum() const
+float StatisticsAccumulator::maximum() const
 {
     if (count_ == 0)
     {
@@ -67,7 +66,7 @@ float StatisticsCalculator::maximum() const
     return maximum_;
 }
 
-float StatisticsCalculator::mean() const
+float StatisticsAccumulator::mean() const
 {
     if (count_ == 0)
     {
@@ -77,7 +76,7 @@ float StatisticsCalculator::mean() const
     return static_cast<float>(moment1_);
 }
 
-float StatisticsCalculator::absolute_mean() const
+float StatisticsAccumulator::absolute_mean() const
 {
     if (count_ == 0)
     {
@@ -87,7 +86,7 @@ float StatisticsCalculator::absolute_mean() const
     return static_cast<float>(abs_moment1_);
 }
 
-float StatisticsCalculator::quadratic_mean() const
+float StatisticsAccumulator::quadratic_mean() const
 {
     if (count_ == 0)
     {
@@ -102,7 +101,7 @@ float StatisticsCalculator::quadratic_mean() const
     return static_cast<float>(rms);
 }
 
-float StatisticsCalculator::standard_deviation() const
+float StatisticsAccumulator::standard_deviation() const
 {
     if (count_ == 0)
     {
@@ -114,7 +113,7 @@ float StatisticsCalculator::standard_deviation() const
     return static_cast<float>(std_dev);
 }
 
-float StatisticsCalculator::skewness() const
+float StatisticsAccumulator::skewness() const
 {
     if (count_ == 0)
     {
@@ -131,7 +130,7 @@ float StatisticsCalculator::skewness() const
     return static_cast<float>(skew);
 }
 
-float StatisticsCalculator::kurtosis() const
+float StatisticsAccumulator::kurtosis() const
 {
     if (count_ == 0)
     {
@@ -148,7 +147,7 @@ float StatisticsCalculator::kurtosis() const
     return static_cast<float>(kurt);
 }
 
-StatisticsCalculator StatisticsCalculator::operator+(const StatisticsCalculator& that) const
+StatisticsAccumulator StatisticsAccumulator::operator+(const StatisticsAccumulator& that) const
 {
     if (this->count_ == 0)
     {
@@ -181,7 +180,7 @@ StatisticsCalculator StatisticsCalculator::operator+(const StatisticsCalculator&
     const double delta3 = delta * delta2;
     const double delta4 = delta2 * delta2;
 
-    StatisticsCalculator combined;
+    StatisticsAccumulator combined;
 
     combined.count_   = this->count_ + that.count_;
     combined.minimum_ = std::min(this->minimum_, that.minimum_);
@@ -204,10 +203,10 @@ StatisticsCalculator StatisticsCalculator::operator+(const StatisticsCalculator&
     return combined;
 }
 
-StatisticsCalculator& StatisticsCalculator::operator+=(const StatisticsCalculator& rhs)
+StatisticsAccumulator& StatisticsAccumulator::operator+=(const StatisticsAccumulator& rhs)
 {
-    StatisticsCalculator combined = *this + rhs;
-    *this                         = combined;
+    StatisticsAccumulator combined = *this + rhs;
+    *this                          = combined;
     return *this;
 }
 

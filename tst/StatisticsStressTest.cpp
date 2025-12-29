@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "stats/StatisticsCalculator.hpp"
+#include "stats/StatisticsAccumulator.hpp"
 #include "stats/StatisticsReport.hpp"
 #include "test_data/DocumentedTestSet.hpp"
 #include "test_data/StressData.hpp"
@@ -10,42 +10,42 @@
 
 TEST(Statistics, Stress_CountsPast32BitLimits)
 {
-    stats::StatisticsCalculator calculator;
+    stats::StatisticsAccumulator statistics;
     uint64_t large_number_counter(0);
     while (large_number_counter < kFiveBillion)
     {
-        calculator.add(1.5F);
+        statistics.add(1.5F);
         ++large_number_counter;
     }
-    EXPECT_EQ(large_number_counter, calculator.count());
+    EXPECT_EQ(large_number_counter, statistics.count());
     EXPECT_EQ("5000000000 Values\n Minimum  = 1.5\n Maximum  = 1.5\n Mean     = 1.5\n Abs.Mean = "
               "1.5\n Rms      = 1.5\n Std.Devn = 0",
-              stats::description(calculator));
+              stats::description(statistics));
 }
 
-TEST(Statistics, Stress_CountsPast32BitLimitsWithTwoCalculators)
+TEST(Statistics, Stress_CountsPast32BitLimitsWithTwoAccumulators)
 {
     const float value(1.5F);
     uint64_t large_number_counter(0);
 
-    stats::StatisticsCalculator calculator1;
+    stats::StatisticsAccumulator statistics1;
     while (large_number_counter < kTwoBillion)
     {
-        calculator1.add(value);
+        statistics1.add(value);
         ++large_number_counter;
     }
 
-    stats::StatisticsCalculator calculator2;
+    stats::StatisticsAccumulator statistics2;
     while (large_number_counter < kFiveBillion)
     {
-        calculator2.add(value);
+        statistics2.add(value);
         ++large_number_counter;
     }
 
-    EXPECT_EQ(kTwoBillion, calculator1.count());
-    EXPECT_EQ(kThreeBillion, calculator2.count());
+    EXPECT_EQ(kTwoBillion, statistics1.count());
+    EXPECT_EQ(kThreeBillion, statistics2.count());
 
-    stats::StatisticsCalculator combined = calculator1 + calculator2;
+    stats::StatisticsAccumulator combined = statistics1 + statistics2;
     EXPECT_EQ(kFiveBillion, combined.count());
     EXPECT_EQ("5000000000 Values\n Minimum  = 1.5\n Maximum  = 1.5\n Mean     = 1.5\n Abs.Mean = "
               "1.5\n Rms      = 1.5\n Std.Devn = 0",
