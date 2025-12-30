@@ -1,9 +1,16 @@
 {
   "name": "STATS",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "statistics-developer",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "USER_NAME": "${env:USER}"
+    }
+  },
+  "mounts": [
+    "source=${env:PWD},target=${env:PWD},type=bind",
+    "source=${env:HOME}/.ssh,target=${env:HOME}/.ssh,type=bind"
+  ],
   "workspaceFolder": "${env:PWD}",
-  "shutdownAction": "stopCompose",
   "customizations": {
     "vscode": {
       "extensions": [

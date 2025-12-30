@@ -4,7 +4,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=America/Chicago
 
 
-# Install developer tools
+# Install developer tools: compilers, meta-build tools, code modeller, linter,
+# auto-formatters, coverage analyzer, and memory analyzer.
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -18,6 +19,9 @@ RUN apt-get update && apt-get install -y \
     valgrind \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+
+# Install the mutation testing engine.
 
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/mull-project/mull-stable/setup.deb.sh' | bash
 RUN apt-get update \
