@@ -46,7 +46,7 @@ IDE's GUI:
 
 Read on below for detailed instructions in using the environment.
 
-![VSCode screenshot showing the C++ developer environment](doc/VSCode.jpeg)
+![VSCode screenshot showing the C++ developer environment](docs/VSCode.jpeg)
 
 
 ## Use The Environment
@@ -133,11 +133,11 @@ environment's C++ development features.
   and the compiler's address sanitizer and undefined-behavior sanitizer.
 
 
-[1]: doc/statistics_coverage_report/coverage_report.html
+[1]: docs/statistics_coverage_report/coverage_report.html
      "HTML code coverage report for the project unit-test program"
 [2]: https://en.wikipedia.org/wiki/Mutation_testing
      "Wikipedia description of mutation testing"
-[3]: doc/statistics_test_no-diff-filter.txt
+[3]: docs/statistics_test_no-diff-filter.txt
      "Full mutation testing report for the project unit-test program"
-[4]: doc/statistics_test_valgrind.txt
+[4]: docs/statistics_test_valgrind.txt
      "Valgrind report for the project unit-test program"
