@@ -46,7 +46,7 @@ IDE's GUI:
 
 Read on below for detailed instructions in using the environment.
 
-![VSCode screenshot showing the C++ developer environment](VSCode.jpeg)
+![VSCode screenshot showing the C++ developer environment](doc/VSCode.jpeg)
 
 
 ## Use The Environment
@@ -89,10 +89,14 @@ When the DevContainer session is ready, try the following steps.
 
 - Try the code editor
 
-  Open src/lib/StatisticsAccumulator.cpp from the file explorer. Note that the
-  code editor has inline git blame and "squiggle" suggestions from clang-tidy.
-  Mouse-over the deliberate misnaming of variable 'dVal' for more information
-  about this violation of the project's code naming conventions.
+  Open src/lib/StatisticsAccumulator.cpp from the file explorer.
+
+  The code editor has git blame for the current line. Mouse-over the brief
+  inline description for a more detailed popup.
+
+  Note the "squiggle" suggestions from the linter, clang-tidy. Mouse-over the
+  deliberate misnaming of variable 'dVal' for more information and a "fixit"
+  for this violation of the project's code naming conventions.
 
   The clangd extension from the LLVM project provides a full C++ code model,
   enabling many code editing helpers such as auto-complete options.
@@ -102,6 +106,7 @@ When the DevContainer session is ready, try the following steps.
 - Examine code coverage
 
   Switch from `all` to the `statistics_coverage_report` target and build it.
+
   Turn on the Coverage Gutters extension's `Watch` function (in the status bar)
   to add coverage annotation to the C++ code editor in the form of colored bars
   by the line numbers.
@@ -111,12 +116,19 @@ When the DevContainer session is ready, try the following steps.
 
 - Test the tests
 
-  A custom build task provides mutation testing for the project, helping find
-  gaps in the tests, even when code-coverage is all green.
-  Select `Run Build Task` from VSCode's `Terminal` menu to create either a full
-  mutation testing report, or an analysis focused on the branch diffs.
+  A custom build task provides [mutation testing][1] for the project, helping
+  find gaps in the tests, even when code coverage is all green.
+  Select `Run Build Task` from VSCode's `Terminal` menu to create either a
+  [full mutation testing report][2], or an analysis for only the branch diffs.
 
 - Create more reports
 
   The environment has more custom build tasks generating reports from valgrind,
   and the compiler's address sanitizer and undefined-behavior sanitizer.
+
+
+
+[1]: https://en.wikipedia.org/wiki/Mutation_testing
+     "Wikipedia description of mutation testing"
+[2]: doc/statistics_test_no-diff-filter.txt
+     "Full mutation testing report for the project unit-test program"
