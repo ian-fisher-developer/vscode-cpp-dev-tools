@@ -149,7 +149,7 @@ environment's C++ development features.
      "HTML code coverage report for the project unit-test program"
 [2]: https://en.wikipedia.org/wiki/Mutation_testing
      "Wikipedia description of mutation testing"
-[3]: https://ian-fisher-developer.github.io/vscode-cpp-dev-tools/statistics_test_no-diff-filter.txt
+[3]: https://ian-fisher-developer.github.io/vscode-cpp-dev-tools/statistics_test_mull_no-diff-filter.txt
      "Full mutation testing report for the project unit-test program"
 [4]: https://ian-fisher-developer.github.io/vscode-cpp-dev-tools/statistics_test_valgrind.txt
      "Valgrind report for the project unit-test program"
